@@ -1,0 +1,13 @@
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\Spider.exe.config
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\Spider.exe
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\Spider.pdb
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\HtmlAgilityPack.dll
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\HtmlAgilityPack.xml
+C:\Users\nvs\source\repos\Spider\Spider\obj\Debug\Spider.csprojAssemblyReference.cache
+C:\Users\nvs\source\repos\Spider\Spider\obj\Debug\Spider.csproj.CoreCompileInputs.cache
+C:\Users\nvs\source\repos\Spider\Spider\obj\Debug\Spider.csproj.CopyComplete
+C:\Users\nvs\source\repos\Spider\Spider\obj\Debug\Spider.exe
+C:\Users\nvs\source\repos\Spider\Spider\obj\Debug\Spider.pdb
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\EPPlus.dll
+C:\Users\nvs\source\repos\Spider\Spider\bin\Debug\EPPlus.xml
