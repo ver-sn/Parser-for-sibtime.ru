@@ -19,6 +19,7 @@ namespace Spider
         static void Main(string[] args)
         {
             string[] articles = { "t1064071605100", "t1064071603100" };
+            List<List<string>> Nodes = new List<List<string>>();
 
             foreach (string article in articles)
             {
@@ -27,32 +28,7 @@ namespace Spider
                 var htmlDoc = web.Load(html);
                 var htmlNodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='specs-table-1024']");
 
-                var Nodes = new List<string>();//создали лист
-                
-                foreach (var node in htmlNodes)
-                {
-                    var res = node.InnerHtml.ToString().Replace("<table class=\"specs-table\">", "").Replace("\t", "").Replace("\n", "").Replace("\r", "")
-                        .Replace("<tr>", "").Replace("</tr>", "#").Split('#');
-
-                    foreach (var i in res)
-                    {
-                        var t = i.Replace("<td>", "").Replace("</td>", "#").Split('#');
-
-                        try
-                        {
-                            var entity = t[0] + " : " + t[1];
-                            Nodes.Add(entity);
-                        }
-                        catch (Exception)
-                        {
-                            var s = "Wrong Entity : " + t;
-                            Nodes.Add(s);
-                        }
-
-                    }
-
-
-                }
+                var Articul = new List<string>();//создали лист
 
                 string myString = "Артикул";
                 string gender = "Пол";
@@ -66,55 +42,94 @@ namespace Spider
                 string belt = "Оформление ремешка/браслета";
                 string colorBelt = "Цвет ремешка/браслета";
 
+                foreach (var node in htmlNodes)
+                {
+                    var res = node.InnerHtml.ToString().Replace("<table class=\"specs-table\">", "").Replace("\t", "").Replace("\n", "").Replace("\r", "")
+                        .Replace("<tr>", "").Replace("</tr>", "#").Split('#');
+
+                    foreach (var i in res)
+                    {
+                        var t = i.Replace("<td>", "").Replace("</td>", "#").Split('#');
+
+                        try
+                        {
+                            var entity = t[0] + " : " + t[1];
+                            Articul.Add(entity);
+                        }
+                        catch (Exception)
+                        {
+                            var s = "Wrong Entity : " + t;
+                            Articul.Add(s);
+                        }
+
+                        
+
+                    }
+
+
+                }
+
+                //Nodes.Add(Articul);
+                                              
                 var Result = new List<string>();
 
-                foreach (var n in Nodes)
+                foreach (var n in Articul)
                 {
-                    if (n.Contains(myString)|| n.Contains(gender) || n.Contains(waterResist) || n.Contains(material) || n.Contains(width) || n.Contains(thickness) || n.Contains(glass) || n.Contains(dial) || n.Contains(mechanism) || n.Contains(belt) || n.Contains(colorBelt))
+                    if (n.Contains(myString) || n.Contains(gender) || n.Contains(waterResist) || n.Contains(material) || n.Contains(width) || n.Contains(thickness) || n.Contains(glass) || n.Contains(dial) || n.Contains(mechanism) || n.Contains(belt) || n.Contains(colorBelt))
                     {
                         Result.Add(n);
                     }
                 }
 
-                foreach (var r in Result)
-                {
-                    Console.WriteLine(r);
-                }
-                Console.WriteLine(Result.Count);
-                Console.ReadKey();
+                Nodes.Add(Result);
 
-
-                using (ExcelPackage excelPackage = new ExcelPackage())
-                {
-                    //Opening an existing Excel file
-                    FileInfo file = new FileInfo(@"D:\file\tissot.xlsx");
-
-                    //create a WorkSheet
-                    ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
-
-                    //add all the content from the List collection
-                    for (int x = 1; x < articles.Length+1;  x++)
-                    {
-                        worksheet.Cells[1, x].LoadFromCollection(Result);
-                        excelPackage.SaveAs(file);
-                    }
-                    
-                }
-
-                Console.WriteLine("файл excel сохранен");
+                //foreach (var r in Result)
+                //{
+                //    Console.WriteLine(r);
+                //}
+                //Console.WriteLine(Result.Count);
+                //Console.ReadKey();
 
             }
-                       
-            //WebClient wc = new WebClient();
-            //string[] articlesBase = { "T106.407.16.051.00", "T106.407.16.031.00" };
-            //foreach (string articleBase in articlesBase)
-            //{
-            //    string path = @"https://www.tissotwatches.com/media/shop/catalog/product/T/0/" + articleBase + ".png";//создаем переменую с урл файла
-            //    wc.DownloadFileAsync(new Uri(path), @"D:\Downloads\tissot\" + System.IO.Path.GetFileName(path));//скачиваем файл по указанному пути в указанное место на диске С
-            //}
-            
-            //Console.WriteLine("Картинки сохранены");
-            //Console.Read();
+
+            using (ExcelPackage excelPackage = new ExcelPackage())
+            {
+                //create a WorkSheet
+                ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.Add("Sheet 1");
+
+                var iter = 1;
+                foreach (var i in Nodes)
+                {
+                    var val = i.ToList();
+                    //add all the content from the List collection
+                    worksheet.Cells[1, iter].LoadFromCollection(val);
+                    iter++;
+                }
+
+                FileInfo fi = new FileInfo(@"D:\file\result.xlsx");
+                excelPackage.SaveAs(fi);
+            }
+
+            Console.WriteLine("файл excel сохранен");
+
+            WebClient wc = new WebClient();
+            string[] articlesBase = { "T106.407.16.051.00", "T106.407.16.031.00" };
+            foreach (string articleBase in articlesBase)
+            {
+                string path = @"https://www.tissotwatches.com/media/shop/catalog/product/T/1/" + articleBase + ".png";//создаем переменую с урл файла 
+                try
+                {
+                    wc.DownloadFileTaskAsync(new Uri(path), @"D:\Downloads\tissot\" + System.IO.Path.GetFileName(path)).GetAwaiter().GetResult();//скачиваем файл по указанному пути в указанное место на диске С 
+                }
+                catch (Exception ex)
+                {
+                    var t = ex;
+                }
+
+            }
+
+            Console.WriteLine("Картинка сохранена");
+            Console.ReadKey();
         }
     }
 }
