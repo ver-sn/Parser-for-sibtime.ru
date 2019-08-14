@@ -36,9 +36,8 @@ namespace Parser
                 "T035.207.36.061.00",
                 "T035.210.11.031.00",
                 "T035.210.16.031.01",
-                "T035.614.11.051.01",
-                
-            };
+                "T035.614.11.051.01"};
+            
             List<List<string>> Nodes = new List<List<string>>();
             List<string> Images = new List<string>();
                                  
